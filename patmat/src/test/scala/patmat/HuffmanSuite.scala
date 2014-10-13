@@ -44,4 +44,29 @@ class HuffmanSuite extends FunSuite {
       assert(decode(t1, encode(t1)("ab".toList)) === "ab".toList)
     }
   }
+
+  test("times should count correctly") {
+    val list = List('a', 'b', 'a', 'a', 'b', 'c', 'd')
+    val result = times(list)
+    assert(result.size === 4)
+    assert(result.filter(p => p._1 == 'a').head._2 === 3)
+    assert(result.filter(p => p._1 == 'b').head._2 === 2)
+    assert(result.filter(p => p._1 == 'c').head._2 === 1)
+    assert(result.filter(p => p._1 == 'd').head._2 === 1)
+  }
+
+  test("singleton: list is a singleton") {
+    assert(singleton(List(new Leaf('a', 3))) === true)
+  }
+
+  test("singleton: list is not a singleton") {
+    assert(singleton(List(new Leaf('a', 3), new Leaf('b', 6))) === false)
+  }
+
+  test("until: should combine many elements into one") {
+    new TestTrees {
+      val result = until(singleton, combine)(List(t1, t2))
+      assert(result.size === 1)
+    }
+  }
 }
